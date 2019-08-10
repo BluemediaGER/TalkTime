@@ -1,0 +1,29 @@
+<div class="ui fixed menu topbar">
+    <div class="ui animated button" onclick="window.location.href = document.URL">
+        <div class="visible content">Zurück</div>
+        <div class="hidden content">
+            <i class="left arrow icon"></i>
+        </div>
+    </div>
+    <div id="startButton" class="ui animated button green" onclick="start(0);">
+        <div id="startButtonText" class="visible content">Start</div>
+        <div class="hidden content">
+            <i id="startButtonIcon" class="play icon"></i>
+        </div>
+    </div>
+    <div class="ui animated button purple" onclick="skip();">
+        <div class="visible content">Überspringen</div>
+        <div class="hidden content">
+            <i class="forward icon"></i>
+        </div>
+    </div>
+    <div class="right menu">
+        <h2 class="rightspace">Geplante Zeit: <span id="totalTime">...</span></h2>
+    </div>
+</div>
+
+<div id="content" class="ui main fluid container">
+    <div id="cards">
+            
+    </div>
+</div>
