@@ -15,7 +15,7 @@ Tipp: Wenn deine Kollegen für dich mehr als nur Zahlen sind, kannst du mit eine
  - Pausieren und Fortsetzen des Timers
 
 ## Installation
-TalkTime ist komplett in JavaScript, HTML und CSS geschrieben, hat keine Abhängigkeiten und funktioniert im Prinzip komplett auf der Seite des Clients. Aus technischen Gründen ist es jedoch nötig, dass TalkTime auf einem richtigen Webserver liegt. Dies liegt daran, dass moderne Webbrowser XHRHtmlRequests auf das lokale Dateisystem aus Sicherheitsgründen blockieren. Die Installation ist simpel: Kopiere einfach den Inhalt dieses Repositorys in das Web-Root-Verzeichnis deines Webservers.
+TalkTime ist komplett in JavaScript, HTML und CSS geschrieben, hat keine Abhängigkeiten und funktioniert im Prinzip komplett auf der Seite des Clients. Aus technischen Gründen ist es jedoch nötig, dass TalkTime auf einem richtigen Webserver liegt. Dies liegt daran, dass moderne Webbrowser XMLHttpRequests auf das lokale Dateisystem aus Sicherheitsgründen blockieren. Die Installation ist simpel: Kopiere einfach den Inhalt dieses Repositorys in das Web-Root-Verzeichnis deines Webservers.
 
 
 ## Lizenz
