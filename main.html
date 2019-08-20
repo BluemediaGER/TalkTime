@@ -1,4 +1,4 @@
-<div class="ui fixed menu topbar">
+﻿<div class="ui fixed menu topbar">
     <div class="ui animated button" onclick="window.location.href = document.URL">
         <div class="visible content">Zurück</div>
         <div class="hidden content">
@@ -21,9 +21,18 @@
         <h2 class="rightspace">Geplante Zeit: <span id="totalTime">...</span></h2>
     </div>
 </div>
-
-<div id="content" class="ui main fluid container">
-    <div id="cards">
-            
+<div class="ui main fluid container" id="content">
+    <div class="ui raised card left-float" id="maincard">
+        <div class="content">
+            <h2 id="card-title">Teilnehmer 1</h2>
+        </div>
+        <div class="content">
+            <h1 id="card-time">...</h1>
+        </div>
+    </div>
+    <div class="ui segment right-float" id="buffer">
+        <h2 class="ui header">
+            <div class="content">Folgende Teilnehmer</div>
+        </h2>
     </div>
 </div>

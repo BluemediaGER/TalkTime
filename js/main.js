@@ -1,5 +1,9 @@
 var isPaused = false;
+var isJumped = false;
 var currentSpeakerTime = 0;
+var timePerSpeaker = 0;
+var speakerArray = [];
+var audio = new Audio('../audio/notify.mp3');
 
 $('#body').load('create.html', function() {
 
@@ -9,35 +13,87 @@ $('#body').load('create.html', function() {
         var speakerCount = this[0].value;
         var plannedTime = this[1].value;
 
-        var timePerSpeaker = plannedTime / speakerCount;
+        timePerSpeaker = plannedTime / speakerCount;
 
         $('#createElement').fadeOut("fast", function() {
 
-            $('#body').load("main.html", function () {
+            $('#body').load("names.html", function () {
 
-                $('#totalTime').html(plannedTime + " Minuten");
-                createCards(speakerCount, timePerSpeaker);
+                createNameFields(speakerCount);
+
+                $('#nameForm').submit(function (event) {
+                    event.preventDefault();
+
+                    for (i = 0; i < (this.length - 2); i++) {
+                        speakerArray.push(this[i].value);
+                    }
+
+                    $('#nameElement').fadeOut("fast", function() {
+
+                        $('#body').load('main.html', function () {
+                            $('#totalTime').html(plannedTime + " Minuten");
+                            prepareMain();
+                        });
+                    });
+                });
             });
         });
     });
 });
 
-function createCards(ammount, timePerCard) {
+function createNameFields(ammount) {
     for(i = 0; i < ammount; i++){
-        $('#cards').append('<div class="ui raised card"><div class="content"><h2 contenteditable="true" class="card-title">Teilnehmer ' + (i + 1) + '</h2></div><div class="content"><h1 id="time-' + i + '">' + new Date(timePerCard * 60 * 1000).toISOString().substr(14, 5) + '</h1><br><span>Minute(n)</span></div></div>');
+        $('.ui.container').before('<div class="field"><div class="ui right labeled input"><input type="text" required="required" value="Teilnehmer ' + (i + 1) +'"><div class="ui basic label">Name</div></div></div>');
     }
 }
 
-function timer(timeId, callback) {
+function prepareMain() {
+
+    $('#card-time').html(new Date(timePerSpeaker * 60 * 1000).toISOString().substr(14, 5));
+    $('#card-title').html(speakerArray[0]);
+
+    for(i = 1; i < speakerArray.length; i++){
+        $('#buffer').append('<div class="ui raised card"><div class="content"><h2 class="buffer-title">' + speakerArray[i] + '</h2></div></div>');
+    }
+}
+
+function timer(callback) {
+
+    var isEnding = false;
+    var isWaiting = false;
 
     var countDownTimer = setInterval(()=>{
         if (!isPaused) {
             if (currentSpeakerTime >= 1) {
-                currentSpeakerTime--;
-                $(timeId).html(new Date(currentSpeakerTime * 1000).toISOString().substr(14, 5));
+		currentSpeakerTime--;
+                if (currentSpeakerTime <= ((20 / 100) * (timePerSpeaker * 60)) && !isEnding) {
+                    $('#maincard').removeClass('active');
+                    $('#maincard').addClass('ending');
+                    isEnding = true;
+                }
+                $('#card-time').html(new Date(currentSpeakerTime * 1000).toISOString().substr(14, 5));
             } else {
-                callback();
-                clearInterval(countDownTimer);
+                if (!isJumped) {
+                    if (currentSpeakerTime < 1 && !isWaiting) {
+                        $('#maincard').removeClass('ending');
+                        $('#maincard').addClass('ended');
+                        $('#card-title').html('Warten...');
+                        $('#buffer').children().eq(1).addClass('ending');
+                        audio.play();
+                        currentSpeakerTime = 11;
+			$('#card-time').html('00:10');
+                        isWaiting = true;
+                    }
+                    if (currentSpeakerTime <= 0) {
+                        callback();
+                        clearInterval(countDownTimer);
+                    }
+		    currentSpeakerTime--;
+                } else {
+                    isJumped = false;
+                    callback();
+                    clearInterval(countDownTimer);
+                }
             }
         }
     }, 1000);
@@ -54,25 +110,30 @@ function start(index) {
         $('#startButton').attr('onclick', 'pause();');
     }
 
-    var cards = $('.ui.raised.card').toArray();
+    if (index != speakerArray.length) {
+        currentSpeakerTime = timePerSpeaker * 60;
+	$('#card-time').html(new Date(currentSpeakerTime * 1000).toISOString().substr(14, 5));        
+	if (index != 0) {
+	    currentSpeakerTime++;
+	}
 
-    if(index != 0){
-        cards[index-1].classList.remove('active');
-    }
+        if (index != 0) {
+            $('#buffer').children().eq(1).remove();
+	    $('#maincard').removeClass('ending');
+            $('#maincard').removeClass('ended');
+            $('#card-title').html(speakerArray[index]);
+        }
 
-    if(index < cards.length){
+        $('#maincard').addClass('active');
 
-        currentSpeakerTime = parseFloat($('#time-' + index).html()) * 60;
-
-        cards[index].classList.add('active');
-
-        timer("#time-" + index, ()=>{
-
-            start(index+1);
+        timer(()=>{
     
+            start(index+1);
+            
         });
-
     } else {
+        $('#maincard').removeClass('ending');
+
         $('#startButton').removeClass("orange");
         $('#startButton').addClass("red");
         $('#startButtonText').html("Beendet");
@@ -107,5 +168,10 @@ function resume() {
 }
 
 function skip() {
+    isJumped = true;
     currentSpeakerTime = 0;
 }
+
+function sleep(milliseconds) {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+ }

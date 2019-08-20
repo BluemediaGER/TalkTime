@@ -19,12 +19,6 @@ body > .grid {
 #totalTime {
     font-weight: normal;
 }
-#cards {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 20px;
-}
 .ui.raised.card {
     display: flex;
     flex-direction: column;
@@ -34,12 +28,42 @@ body > .grid {
     min-width: 300px;
     background-color: white;
 }
+div#maincard {
+    width: 60%;
+    height: 60%;
+}
 .content > h1 {
-    font-size: 36px;
+    font-size: 20vw;
+}
+#card-title {
+    font-size: 6vw;
 }
 .content {
     text-align: center;
 }
 .ui.raised.card.active {
-    background-color: #a0ffc8;
+    background-color: white;
+}
+.ui.raised.card.ending {
+    background-color: #f1ffa0;
+}
+.ui.raised.card.ended {
+    background-color: #ffa6a0;
+}
+.ui.header {
+    text-align: center;
+}
+.topmargin {
+    margin-top: 40px !important;
+}
+.left-float {
+    float: left;
+}
+.right-float {
+    float: right;
+}
+.segment#buffer {
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
 }
