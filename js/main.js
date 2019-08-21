@@ -3,7 +3,7 @@ var isJumped = false;
 var currentSpeakerTime = 0;
 var timePerSpeaker = 0;
 var speakerArray = [];
-var audio = new Audio('../audio/notify.mp3');
+var audio = new Audio('./audio/notify.mp3');
 
 $('#body').load('create.html', function() {
 
